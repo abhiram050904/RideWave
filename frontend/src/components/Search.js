@@ -47,12 +47,18 @@ const Search = () => {
     navigate('/confirm', { state: { pickup: pickupLocation, drop: dropLocation } });
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login'); // Navigate to the login page after logout
+  };
+
   return (
     <SearchContainer>
       <ToastContainer />
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
       </ButtonContainer>
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       <InputContainer>
         <FromToIcons>
           <LuCircle size={24} />
@@ -102,6 +108,20 @@ const ButtonContainer = styled.div`
   align-items: center;
   height: 3rem;
   cursor: pointer;
+`;
+
+const LogoutButton = styled.button`
+  background-color: #f44336; /* Red color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin-left: auto; /* Aligns to the right */
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
 `;
 
 const InputContainer = styled.div`

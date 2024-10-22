@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FaCarSide } from 'react-icons/fa'; // Car icon from react-icons
 import { IoMdArrowRoundBack } from "react-icons/io"; // Back icon from react-icons
 import { useNavigate, useLocation } from 'react-router-dom'; // To navigate and retrieve state
 import Map from './Map';
+import RideSelector from './Rideselector'; // Import the RideSelector component
 
 const Confirm = () => {
   const [pickupCoords, setPickupCoords] = useState({ longitude: 80.4339, latitude: 16.3067 }); // Default coordinates
@@ -49,48 +49,37 @@ const Confirm = () => {
     navigate(-1); // This navigates the user back to the previous page
   };
 
+  const handleSubmit = () => {
+    // Handle the submit logic here
+    console.log('Ride selected!'); // Replace this with your submit logic
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login'); // Navigate to the login page after logout
+  };
+
   return (
     <ConfirmContainer>
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
       </ButtonContainer>
-      <Map pickupCoordinates={[pickupCoords.longitude, pickupCoords.latitude]} dropCoordinates={[dropCoords.longitude, dropCoords.latitude]} />
-      <Heading>Choose a ride to proceed</Heading>
-      <RideContainer>
-        <RideOption>
-          <CarIcon>
-            <FaCarSide size={36} />
-          </CarIcon>
-          <RideDetails>
-            <DriverName>Uber small</DriverName>
-            <TimeAway>5 min away</TimeAway>
-          </RideDetails>
-          <RidePrice>$15.00</RidePrice>
-        </RideOption>
-
-        <RideOption>
-          <CarIcon>
-            <FaCarSide size={36} />
-          </CarIcon>
-          <RideDetails>
-            <DriverName>Uber large</DriverName>
-            <TimeAway>7 min away</TimeAway>
-          </RideDetails>
-          <RidePrice>$20.00</RidePrice>
-        </RideOption>
-
-        <RideOption>
-          <CarIcon>
-            <FaCarSide size={36} />
-          </CarIcon>
-          <RideDetails>
-            <DriverName>Uber extra Large</DriverName>
-            <TimeAway>10 min away</TimeAway>
-          </RideDetails>
-          <RidePrice>$18.00</RidePrice>
-        </RideOption>
-      </RideContainer>
-      <ConfirmButton>Confirm Ride</ConfirmButton>
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      <MapContainer>
+        <Map 
+          pickupCoordinates={[pickupCoords.longitude, pickupCoords.latitude]} 
+          dropCoordinates={[dropCoords.longitude, dropCoords.latitude]} 
+        />
+      </MapContainer>
+      <ContentContainer>
+        <Heading>Choose a ride to proceed</Heading>
+        {/* Render RideSelector component */}
+        <RideSelector 
+          pickupCoordinates={[pickupCoords.longitude, pickupCoords.latitude]} 
+          dropCoordinates={[dropCoords.longitude, dropCoords.latitude]} 
+        />
+        <ConfirmRide onClick={handleSubmit}>Confirm Ride</ConfirmRide> {/* Add the submit button */}
+      </ContentContainer>
     </ConfirmContainer>
   );
 };
@@ -111,6 +100,22 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
+// Map container: it should take 50% of the screen and remain sticky
+const MapContainer = styled.div`
+  height: 50vh; /* 50% of viewport height */
+  position: sticky;
+  top: 0;
+  width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1rem;
+`;
+
 const Heading = styled.div`
   background-color: #e0e0e0;
   text-align: center;
@@ -121,73 +126,32 @@ const Heading = styled.div`
   margin-bottom: 1rem;
 `;
 
-const RideContainer = styled.div`
-  flex: 1;
-  background-color: white;
-  padding: 1rem;
-`;
-
-const RideOption = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f3f4f6;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-
+const ConfirmRide = styled.button`
+  background-color: black; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  margin-top: auto; /* Push to the bottom */
+  
   &:hover {
-    transform: scale(1.05);
+    background-color: #45a049; /* Darker green on hover */
   }
 `;
 
-const CarIcon = styled.div`
-  margin-right: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-`;
-
-const RideDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-`;
-
-const DriverName = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  color: #333;
-`;
-
-const TimeAway = styled.div`
-  font-size: 16px;
-  color: #555;
-`;
-
-const RidePrice = styled.div`
-  font-size: 22px;
-  font-weight: 600;
-  color: #111;
-`;
-
-const ConfirmButton = styled.button`
-  background-color: #000000;
-  color: #ffffff;
-  height: 8.5rem;
-  width: 98%;
+const LogoutButton = styled.button`
+  background-color: #f44336; /* Red color */
+  color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin-left: auto; /* Aligns to the right */
   cursor: pointer;
-  margin: 1rem;
-  font-size: 22px;
 
   &:hover {
-    background-color: #333;
+    background-color: #d32f2f; /* Darker red on hover */
   }
 `;
 

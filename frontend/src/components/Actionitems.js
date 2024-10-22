@@ -6,8 +6,24 @@ import avatar from '../images/avatar2.png';
 import { FaCarSide } from "react-icons/fa";
 import { FaMotorcycle } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
-
+import { useState,useEffect } from 'react';
 const Actionitems = () => {
+
+
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('chat-app-user');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser); // Attempt to parse the stored JSON
+        setUsername(user.username); // Check if the 'username' property exists
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
+
   const navigate = useNavigate();
 
   const handleInputButtonClick = () => {
@@ -19,7 +35,7 @@ const Actionitems = () => {
       <Header>
         <Logo src={logo} alt="Logo" />
         <Profile>
-          <Name>Abhiram</Name>
+          <span><Name>Welcome, {username || 'User'}!</Name></span>
           <UserImage src={avatar} alt="User" />
         </Profile>
       </Header>
@@ -28,11 +44,11 @@ const Actionitems = () => {
           <StyledIcon as={FaCarSide} />
           Ride
         </ActionButton>
-        <ActionButton>
+        <ActionButton onClick={() => navigate('/search')}>
           <StyledIcon as={FaMotorcycle} />
-          Wheels
+          Two Wheeler
         </ActionButton>
-        <ActionButton>
+        <ActionButton onClick={() => navigate('/search')}>
           <StyledIcon as={SlCalender} />
           Reserve
         </ActionButton>
