@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { LuCircle } from "react-icons/lu";
@@ -7,16 +7,49 @@ import { IoMdSquareOutline } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Search = () => {
   const navigate = useNavigate();
+  const [pickupLocation, setPickupLocation] = useState('');
+  const [dropLocation, setDropLocation] = useState('');
 
   const handleBackClick = () => {
     navigate('/');
   };
 
+  const handleConfirmClick = () => {
+    // Validate inputs
+    if (!pickupLocation && !dropLocation) {
+      toast.error("Both pickup and drop locations are required!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+      return;
+    }
+    if (!pickupLocation) {
+      toast.error("Pickup location is required!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+      return;
+    }
+    if (!dropLocation) {
+      toast.error("Drop location is required!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    // Navigate to confirmation page with state
+    navigate('/confirm', { state: { pickup: pickupLocation, drop: dropLocation } });
+  };
+
   return (
     <SearchContainer>
+      <ToastContainer />
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
       </ButtonContainer>
@@ -27,8 +60,16 @@ const Search = () => {
           <IoMdSquareOutline size={24} />
         </FromToIcons>
         <InputBoxes>
-          <Input placeholder='Enter pickup location' />
-          <Input placeholder='Enter the drop location' />
+          <Input
+            placeholder='Enter pickup location'
+            value={pickupLocation}
+            onChange={(e) => setPickupLocation(e.target.value)}
+          />
+          <Input
+            placeholder='Enter the drop location'
+            value={dropLocation}
+            onChange={(e) => setDropLocation(e.target.value)}
+          />
         </InputBoxes>
         <AiOutlinePlusCircle size={40} color="#000000" />
       </InputContainer>
@@ -38,12 +79,12 @@ const Search = () => {
         </StarIcon>
         Saved Places
       </SavedPlaces>
-      <ConfirmButton>
+      <ConfirmButton onClick={handleConfirmClick}>
         Confirm Location
       </ConfirmButton>
     </SearchContainer>
-  )
-}
+  );
+};
 
 const SearchContainer = styled.div`
   background-color: #e5e7eb;
