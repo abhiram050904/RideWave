@@ -5,9 +5,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginRoute } from "../apiRoutes";
-// import bg from '../images/bg2.jpg';
-// import img from '../images/loginimg.webp';
-import avatar from  '../images/avatar2.png'
+import Logo from '../images/logo.png';
+
 export default function Login() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Loading state
@@ -76,15 +75,12 @@ export default function Login() {
     return (
         <>
             <FormContainer>
-                <ImageContainer>
-                    {/* <img src={img} alt="Login" /> */}
-                </ImageContainer>
                 <FormWrapper>
                     <form onSubmit={handleSubmit}>
-                    <div className="brand">
-                        <img src={avatar} alt="logo" />
-                        <h1>RapidWave</h1>
-                    </div>
+                        <div className="brand">
+                            <img src={Logo} alt="logo" />
+                            <h1>RapidWave</h1>
+                        </div>
                         <InputContainer>
                             <input
                                 type="text"
@@ -122,62 +118,51 @@ const FormContainer = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    ${'' /* background-image: url(${bg}); */}
-    background-size: cover;
-    background-position: center;
-    .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    img {
-      height: 5rem;
-    }
-    h1 {
-      color: black;
-      text-transform: uppercase;
-    }
-  }
-`;
-
-const ImageContainer = styled.div`
-    flex: 1; /* Take up 1/2 of the container */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    img {
-        max-width: 100%; /* Adjusted for better sizing */
-        height: 70vh; /* Maintain aspect ratio */
-    }
+    justify-content: center; 
+    align-items: center; 
+    background: linear-gradient(135deg, #ff007f, #7a00ff); /* Reddish-violet gradient */
 `;
 
 const FormWrapper = styled.div`
-    flex: 0.9; /* Take up slightly less space than the ImageContainer */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center form vertically */
+    justify-content: center; 
     align-items: center;
-    margin-left: -5%; /* Adjusted margin to move the form slightly left */
-
-    h1 {
-        color: #242928; /* Updated color */
-        font-size: 2.5rem; /* Slightly reduced size */
-        text-align: center; /* Centered text */
-        margin-bottom: 2rem; /* Remove margin */
-    }
+    max-width: 400px; /* Set a max width for the form */
+    width: 100%; /* Full width to be responsive */
 
     form {
-        background-color: rgba(252, 246, 249, 0.78);
+        background-color: #ffffff; /* Set the background to a near-transparent white */
         border: 3px solid #ffffff;
-        border-radius: 1.5rem; /* Added border radius */
-        padding: 3rem 5rem;
-        box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1); /* Adding subtle shadow */
+        border-radius: 1.5rem; 
+        padding: 2.5rem 5rem;
+        box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1); 
         display: flex;
         flex-direction: column;
-        gap: 1rem; /* Reduced gap between inputs */
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .brand {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        justify-content: center;
+
+        img {
+            height: 150px; /* Increased size of the logo */
+        }
+
+        h1 {
+            background: linear-gradient(90deg, #000000, #ff0000); /* Greenish-red gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem; /* Increased font size */
+            text-transform: uppercase;
+        }
     }
 
     button {
@@ -206,10 +191,17 @@ const FormWrapper = styled.div`
     span {
         color: black; 
         text-transform: uppercase;
+
         a {
-            color: #4e0eff;
+            color: violet; /* Changed color to violet */
             text-decoration: none;
             font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease; /* Added transition for smooth effect */
+
+            &:hover {
+                transform: scale(1.2); /* Increase size on hover */
+                color: hotpink; /* Optional: Change color on hover to give more emphasis */
+            }
         }
     }
 `;
@@ -224,22 +216,22 @@ const InputContainer = styled.div`
         background-color: transparent;
         padding: 1rem;
         margin: 1rem;
-        border-radius: 20px;
-        border: 2px solid #3de3c2;
+        border-radius: 10px;
+        border: 2px solid pink; /* Changed border color to pink */
         color: black;
         width: 100%;
         font-size: 1rem;
-        transition: border 0.3s ease, transform 0.3s ease; /* Added transition for smooth effect */
+        transition: border 0.3s ease, transform 0.3s ease; 
 
         &:focus {
-            border: 2px solid #4e0eff; /* Change border color on focus */
+            border: 2px solid hotpink; /* Changed focus border color to hotpink */
             outline: none;
-            transform: scale(1.02); /* Slightly increase size on focus */
+            transform: scale(1.02); 
         }
 
         &:hover {
-            border: 2px solid #997af0; /* Change border color on hover */
-            transform: scale(1.01); /* Slightly increase size on hover */
+            border: 2px solid black; 
+            transform: scale(1.01); 
         }
     }
 `;

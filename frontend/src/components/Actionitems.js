@@ -1,15 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import logo from '../images/logo.avif';
 import avatar from '../images/avatar2.png';
-import { FaCarSide } from "react-icons/fa";
-import { FaMotorcycle } from "react-icons/fa";
+import { FaCarSide, FaMotorcycle } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
 const Actionitems = () => {
-
-
   const [username, setUsername] = useState('');
 
   useEffect(() => {
@@ -33,9 +30,8 @@ const Actionitems = () => {
   return (
     <ActionContainer>
       <Header>
-        <Logo src={logo} alt="Logo" />
         <Profile>
-          <span><Name>Welcome, {username || 'User'}!</Name></span>
+          <Name>Welcome, {username || 'User'}!</Name>
           <UserImage src={avatar} alt="User" />
         </Profile>
       </Header>
@@ -53,7 +49,7 @@ const Actionitems = () => {
           Reserve
         </ActionButton>
       </ActionButtons>
-      <InputButton onClick={handleInputButtonClick}> {/* Adding click handler */}
+      <InputButton onClick={handleInputButtonClick}>
         Where do you want to go?
       </InputButton>
     </ActionContainer>
@@ -63,23 +59,21 @@ const Actionitems = () => {
 const ActionContainer = styled.div`
   flex: 1;
   padding: 16px;
-  background-color: white;
+  background: linear-gradient(135deg, #ff007f, #7a00ff); /* Reddish-violet gradient */
 `;
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center the profile container */
   align-items: center;
-`;
-
-const Logo = styled.img`
-  height: 80px;
-  cursor: pointer;
+  width: 100%; /* Full width to center content */
 `;
 
 const Profile = styled.div`
   display: flex;
   align-items: center;
+  color: black;
+  font-size: 18px;
 `;
 
 const UserImage = styled.img`
@@ -92,7 +86,6 @@ const UserImage = styled.img`
 
 const Name = styled.div`
   margin-right: 16px;
-  width: 80px;
   font-size: 30px;
   font-weight: 500;
   color: #333333;
@@ -105,7 +98,7 @@ const ActionButtons = styled.div`
 
 const ActionButton = styled.div`
   flex: 1;
-  background-color: #e0e0e0;
+  background-color: black; /* Set background to black */
   margin: 0 5px;
   padding: 10px;
   height: 80px;
@@ -121,25 +114,25 @@ const ActionButton = styled.div`
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: green;
+    background-color: green; /* Change to green on hover */
     transform: scale(1.05);
   }
 `;
 
 const StyledIcon = styled.div`
-  font-size: 40px;
+  font-size: 50px; /* Increase icon size to 50px */
   margin-bottom: 5px;
-  color: #333;
+  color: white; /* Set icon color to white */
 
   ${ActionButton}:hover & {
     color: #007bff;
-    font-size: 45px;
+    font-size: 55px; /* Slightly increase size on hover */
   }
 `;
 
 const InputButton = styled.div`
   height: 60px;
-  background-color: #f0f0f0;
+  background-color: black; /* Set background to black */
   text-align: center;
   font-size: 24px;
   padding: 10px;
@@ -149,6 +142,12 @@ const InputButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer; /* Change cursor to pointer */
+  color: white; /* Set text color to white */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+
+  &:hover {
+    background-color: green; /* Change to green on hover */
+  }
 `;
 
 export default Actionitems;

@@ -5,6 +5,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { RegisterRoute } from "../apiRoutes";
+import Logo from '../images/logo.png';
+import bg from '../images/background.webp'; // Import the background image
 
 export default function Register() {
     const navigate = useNavigate();
@@ -85,15 +87,10 @@ export default function Register() {
     return (
         <>
             <FormContainer>
-                <ImageContainer>
-                    {/* Uncomment if you have a logo */}
-                    {/* <img src={Logo} alt="logo" /> */}
-                </ImageContainer>
                 <FormWrapper>
                     <form onSubmit={handleSubmit}>
                         <div className="brand">
-                            {/* Uncomment if you have an avatar */}
-                            {/* <img src={avatar} alt="logo" /> */}
+                            <img src={Logo} alt="logo" />
                             <h1>RapidWave</h1>
                         </div>
                         <InputContainer>
@@ -140,58 +137,55 @@ export default function Register() {
     );
 }
 
+
 const FormContainer = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center; 
     align-items: center; 
-    background-size: cover;
-    background-position: center;
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        justify-content: center;
-        h1 {
-            color: black;
-            text-transform: uppercase;
-        }
-    }
+    background: linear-gradient(135deg, #ff007f, #7a00ff); /* Reddish-violet gradient */
 `;
 
-const ImageContainer = styled.div`
-    flex: 1; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
 
 const FormWrapper = styled.div`
-    flex: 0.9; 
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center;
-    margin-left: -5%; 
-
-    h1 {
-        color: #242928; 
-        font-size: 2.5rem; 
-        text-align: center; 
-        margin-bottom: 2rem; 
-    }
 
     form {
-        background-color: rgba(252, 246, 249, 0.78);
+        background-color: #ffffff; /* Set the background to a near-transparent white */
         border: 3px solid #ffffff;
         border-radius: 1.5rem; 
-        padding: 3rem 5rem;
+        padding: 2.5rem 5rem;
         box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1); 
         display: flex;
         flex-direction: column;
-        gap: 1rem; 
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .brand {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        justify-content: center;
+
+        img {
+            height: 150px; /* Increased size of the logo */
+        }
+
+        h1 {
+            background: linear-gradient(90deg, #000000, #ff0000); /* Greenish-red gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem; /* Increased font size */
+            text-transform: uppercase;
+        }
     }
 
     button {
@@ -218,17 +212,24 @@ const FormWrapper = styled.div`
     }
 
     span {
-        color: black; 
-        text-transform: uppercase;
-        a {
-            color: #4e0eff;
-            text-decoration: none;
-            font-weight: bold;
+    color: black; 
+    text-transform: uppercase;
+
+    a {
+        color: violet; /* Changed color to violet */
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease, transform 0.3s ease; /* Added transition for smooth effect */
+
+        &:hover {
+            transform: scale(1.2); /* Increase size on hover */
+            color: hotpink; /* Optional: Change color on hover to give more emphasis */
         }
     }
-`;
+}
 
-const InputContainer = styled.div`
+    `;
+    const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -238,21 +239,22 @@ const InputContainer = styled.div`
         background-color: transparent;
         padding: 1rem;
         margin: 1rem;
-        border-radius: 20px;
-        border: 2px solid #3de3c2;
+        border-radius: 10px;
+        border: 2px solid pink; /* Changed border color to pink */
         color: black;
         width: 100%;
         font-size: 1rem;
         transition: border 0.3s ease, transform 0.3s ease; 
 
         &:focus {
-            border: 2px solid #4e0eff; 
+            border: 2px solid hotpink; /* Changed focus border color to hotpink */
             outline: none;
             transform: scale(1.02); 
+
         }
 
         &:hover {
-            border: 2px solid #997af0; 
+            border: 2px solid black; 
             transform: scale(1.01); 
         }
     }

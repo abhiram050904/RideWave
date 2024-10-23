@@ -57,8 +57,8 @@ const Search = () => {
       <ToastContainer />
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
-      </ButtonContainer>
       <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      </ButtonContainer>
       <InputContainer>
         <FromToIcons>
           <LuCircle size={24} />

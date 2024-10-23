@@ -63,8 +63,8 @@ const Confirm = () => {
     <ConfirmContainer>
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
+       <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </ButtonContainer>
-      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       <MapContainer>
         <Map 
           pickupCoordinates={[pickupCoords.longitude, pickupCoords.latitude]} 
