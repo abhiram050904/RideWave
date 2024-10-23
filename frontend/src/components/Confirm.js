@@ -1,69 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IoMdArrowRoundBack } from "react-icons/io"; // Back icon from react-icons
-import { useNavigate, useLocation } from 'react-router-dom'; // To navigate and retrieve state
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useNavigate, useLocation } from 'react-router-dom';
 import Map from './Map';
-import RideSelector from './Rideselector'; // Import the RideSelector component
+import RideSelector from './Rideselector'; // Ensure the correct import name
 
 const Confirm = () => {
-  const [pickupCoords, setPickupCoords] = useState({ longitude: 80.4339, latitude: 16.3067 }); // Default coordinates
-  const [dropCoords, setDropCoords] = useState({ longitude: 80.4339, latitude: 16.3067 }); // Default coordinates
+  const [pickupCoords, setPickupCoords] = useState({ longitude: 80.4339, latitude: 16.3067 });
+  const [dropCoords, setDropCoords] = useState({ longitude: 80.4339, latitude: 16.3067 });
+  const [selectedFare, setSelectedFare] = useState(null); // New state for selected fare
 
   const navigate = useNavigate();
-  const location = useLocation(); // To retrieve the state from navigate
+  const location = useLocation();
 
-  // Destructure pickup and drop locations from state
-  const { pickup, drop } = location.state || {}; // Use empty object fallback in case state is undefined
+  const { pickup, drop } = location.state || {};
 
-  const getCoordinates = (location, setCoords) => {
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?` + 
-      new URLSearchParams({
-        access_token: "pk.eyJ1Ijoia2FydW5hc3JlZSIsImEiOiJjbTJrMmZuYzIwYXdkMnFyMDBjYmlsMGpzIn0.6uXxxe27ekWu5ELVnFRKpA",
-        limit: 1
-      })
-    )
-    .then(response => response.json())
-    .then(data => {
+  const getCoordinates = async (location, setCoords) => {
+    try {
+      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?` + 
+        new URLSearchParams({
+          access_token: "pk.eyJ1Ijoia2FydW5hc3JlZSIsImEiOiJjbTJrMmZuYzIwYXdkMnFyMDBjYmlsMGpzIn0.6uXxxe27ekWu5ELVnFRKpA",
+          limit: 1
+        })
+      );
+      const data = await response.json();
       if (data.features && data.features.length > 0) {
         const [longitude, latitude] = data.features[0].center;
         setCoords({ longitude, latitude });
-        console.log(`Coordinates of ${location}: Latitude: ${latitude}, Longitude: ${longitude}`);
       } else {
         console.log(`Location for ${location} not found`);
       }
-    })
-    .catch(error => console.error(`Error fetching coordinates for ${location}:`, error));
+    } catch (error) {
+      console.error(`Error fetching coordinates for ${location}:`, error);
+    }
   };
 
   useEffect(() => {
-    // Only fetch coordinates if pickup and drop are defined
-    if (pickup) {
-      getCoordinates(pickup, setPickupCoords);
-    }
-    if (drop) {
-      getCoordinates(drop, setDropCoords);
-    }
+    if (pickup) getCoordinates(pickup, setPickupCoords);
+    if (drop) getCoordinates(drop, setDropCoords);
   }, [pickup, drop]);
 
-  const handleBackClick = () => {
-    navigate(-1); // This navigates the user back to the previous page
-  };
+  const handleBackClick = () => navigate(-1);
 
   const handleSubmit = () => {
-    // Handle the submit logic here
-    console.log('Ride selected!'); // Replace this with your submit logic
+    navigate('/final', {
+      state: {
+        pickupCoords,
+        dropCoords,
+        selectedFare, // Pass selected fare to Finalpage
+      },
+    });
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/login'); // Navigate to the login page after logout
+    navigate('/login');
   };
 
   return (
     <ConfirmContainer>
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
-       <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </ButtonContainer>
       <MapContainer>
         <Map 
@@ -73,12 +71,12 @@ const Confirm = () => {
       </MapContainer>
       <ContentContainer>
         <Heading>Choose a ride to proceed</Heading>
-        {/* Render RideSelector component */}
         <RideSelector 
           pickupCoordinates={[pickupCoords.longitude, pickupCoords.latitude]} 
           dropCoordinates={[dropCoords.longitude, dropCoords.latitude]} 
+          onSelectFare={setSelectedFare} // Pass setSelectedFare to RideSelector
         />
-        <ConfirmRide onClick={handleSubmit}>Confirm Ride</ConfirmRide> {/* Add the submit button */}
+        <ConfirmRide onClick={handleSubmit}>Confirm Ride</ConfirmRide>
       </ContentContainer>
     </ConfirmContainer>
   );
@@ -92,17 +90,15 @@ const ConfirmContainer = styled.div`
 
 const ButtonContainer = styled.div`
   background-color: #ffffff;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
   display: flex;
   align-items: center;
   height: 3rem;
   cursor: pointer;
 `;
 
-// Map container: it should take 50% of the screen and remain sticky
 const MapContainer = styled.div`
-  height: 50vh; /* 50% of viewport height */
+  height: 50vh; 
   position: sticky;
   top: 0;
   width: 100%;
@@ -127,31 +123,32 @@ const Heading = styled.div`
 `;
 
 const ConfirmRide = styled.button`
-  background-color: black; /* Green background */
-  color: white; /* White text */
-  padding: 10px 20px; /* Padding */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
-  margin-top: auto; /* Push to the bottom */
-  
+  background-color: black; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  margin-top: auto; 
+
   &:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049; 
   }
 `;
 
 const LogoutButton = styled.button`
-  background-color: #f44336; /* Red color */
+  background-color: #f44336; 
   color: white;
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
-  margin-left: auto; /* Aligns to the right */
+  margin-left: auto;
   cursor: pointer;
+  font-size: 16px;
 
   &:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: #e53935; 
   }
 `;
 

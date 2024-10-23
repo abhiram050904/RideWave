@@ -57,7 +57,7 @@ const Search = () => {
       <ToastContainer />
       <ButtonContainer onClick={handleBackClick}>
         <IoMdArrowRoundBack size={32} />
-      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+        <LogoutButton onClick={handleLogout}>LOG OUT</LogoutButton>
       </ButtonContainer>
       <InputContainer>
         <FromToIcons>
@@ -93,11 +93,12 @@ const Search = () => {
 };
 
 const SearchContainer = styled.div`
-  background-color: #e5e7eb;
+  background-color: #f0f0f0; /* Updated background color */
   height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
+  background: linear-gradient(135deg, #ff007f, #7a00ff); /* Reddish-violet gradient */
 `;
 
 const ButtonContainer = styled.div`
@@ -111,16 +112,24 @@ const ButtonContainer = styled.div`
 `;
 
 const LogoutButton = styled.button`
-  background-color: #f44336; /* Red color */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  margin-left: auto; /* Aligns to the right */
+  position: absolute; /* Position logout button to allow it to float right */
+  right: 20px; /* Adjust distance from the right */
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  font-weight: 500;
+  background-color: black; /* Set background to black */
+  padding: 10px 15px; /* Add padding for better appearance */
+  border-radius: 5px; /* Rounded corners */
+  color: white; /* Set text color to white */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
 
   &:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: red; /* Change to red on hover */
+  }
+
+  span {
+    margin-left: 0.5rem; /* Spacing between icon and text */
   }
 `;
 
